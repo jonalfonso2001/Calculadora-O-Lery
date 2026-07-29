@@ -1,0 +1,78 @@
+"""
+Calculadora de índice de higiene oral (O'Leary).
+Ejecuta la función desde la línea de comandos o importa la función en otro módulo.
+"""
+
+def calcular_indice_oleary():
+    print("=" * 50)
+    print("  CALCULADORA DE ÍNDICE DE HIGIENE ORAL (O'LEARY)")
+    print("=" * 50)
+
+    # 1. Entrada de datos básicos (con reintentos hasta entrada válida)
+    while True:
+        try:
+            dientes_presentes = int(input("Ingresa el número de dientes presentes en boca: "))
+            if dientes_presentes <= 0 or dientes_presentes > 32:
+                print("❌ Error: El número de dientes debe estar entre 1 y 32.")
+                continue
+            break
+        except ValueError:
+            print("❌ Error: Por favor ingresa únicamente números enteros.")
+
+    superficies_totales = dientes_presentes * 4
+
+    while True:
+        try:
+            prompt = f"Ingresa el total de superficies teñidas con placa (Máx. {superficies_totales}): "
+            superficies_con_placa = int(input(prompt))
+            if superficies_con_placa < 0 or superficies_con_placa > superficies_totales:
+                print(f"❌ Error: Las superficies teñidas no pueden ser mayores a {superficies_totales} ni negativas.")
+                continue
+            break
+        except ValueError:
+            print("❌ Error: Por favor ingresa únicamente números enteros.")
+
+    # 2. Cálculo del porcentaje
+    porcentaje_placa = (superficies_con_placa / superficies_totales) * 100 if superficies_totales else 0.0
+
+    # 3. Diagnóstico y nivel de riesgo
+    if porcentaje_placa <= 10:
+        diagnostico = "Excelente / Control Óptimo de Placa"
+        riesgo = "Bajo"
+        recomendacion = "Mantener la técnica de cepillado actual y uso de hilo dental."
+    elif porcentaje_placa <= 20:
+        diagnostico = "Aceptable / Cuidado Preventivo"
+        riesgo = "Moderado"
+        recomendacion = "Reforzar la técnica de cepillado en zonas específicas teñidas."
+    else:
+        diagnostico = "Deficiente / Placa Bacteriana Elevada"
+        riesgo = "Alto (Riesgo Periodontal/Cariogénico)"
+        recomendacion = "Requiere técnica de cepillado asistida, revelado de placa en casa y profilaxis profesional."
+
+    # 4. Impresión de Resultados
+    print("\n" + "-" * 50)
+    print("RESUMEN DEL DIAGNÓSTICO CLÍNICO")
+    print("-" * 50)
+    print(f"• Dientes evaluados:         {dientes_presentes}")
+    print(f"• Superficies evaluadas:     {superficies_totales}")
+    print(f"• Superficies con placa:     {superficies_con_placa}")
+    print(f"• Índice de O'Leary:         {porcentaje_placa:.1f}%")
+    print(f"• Criterio Clínico:          {diagnostico}")
+    print(f"• Nivel de Riesgo:           {riesgo}")
+    print(f"• Recomendación:             {recomendacion}")
+    print("-" * 50)
+
+    # Devuelve los resultados para uso programático si se desea
+    return {
+        "dientes": dientes_presentes,
+        "superficies_evaluadas": superficies_totales,
+        "superficies_con_placa": superficies_con_placa,
+        "indice_oleary": round(porcentaje_placa, 1),
+        "diagnostico": diagnostico,
+        "riesgo": riesgo,
+        "recomendacion": recomendacion,
+    }
+
+
+if __name__ == "__main__":
+    calcular_indice_oleary()
